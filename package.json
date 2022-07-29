@@ -1,0 +1,22 @@
+{
+  "name": "cartersdk",
+  "version": "1.0.0",
+  "description": "The Javascript Carter SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/get-solutions/CarterSDK.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/get-solutions/CarterSDK/issues"
+  },
+  "homepage": "https://github.com/get-solutions/CarterSDK#readme",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  }
+}
