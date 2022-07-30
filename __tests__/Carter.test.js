@@ -100,6 +100,116 @@ describe('Carter:', () => {
     });
   });
 
+  describe('Add Intent:', () => {
+    describe('Error Handling:', () => {
+      it('will correctly handle an invalid API Key Error', async () => {
+        mock.onPost('/v0/add-intent').reply(200, {error: 'invalid api key'});
+        const carter = new Carter('someKey');
+
+        await expect(carter.addIntent({})).rejects.toThrow(CarterInvalidApiKeyError);
+      });
+
+      it('will correctly handle a Forbidden Error', async () => {
+        mock.onPost('/v0/add-intent').reply(403);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.addIntent({})).rejects.toThrow(CarterForbiddenError);
+      });
+  
+      it('will correctly handle a Not Found Error', async () => {
+        mock.onPost('/v0/add-intent').reply(404);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.addIntent({})).rejects.toThrow(CarterNotFoundError);
+      });
+  
+      it('will correctly handle an Unprocessable Entity Error', async () => {
+        mock.onPost('/v0/add-intent').reply(422);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.addIntent({})).rejects.toThrow(CarterUnprocessableEntityError);
+      });
+  
+      it('will correctly handle an Internal Server Error', async () => {
+        mock.onPost('/v0/add-intent').reply(500);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.addIntent({})).rejects.toThrow(CarterInternalServerError);
+      });
+  
+      it('will correctly handle another odd error', async () => {
+        mock.onPost('/v0/add-intent').reply(543);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.addIntent({})).rejects.toThrow(CarterResponseError);
+      });
+    });
+
+    describe('Successful Response:', () => {
+      it('will return a valid response', async () => {
+        mock.onPost('/v0/add-intent').reply(200, null);
+        const carter = new Carter('someKey');
+
+        await expect(carter.addIntent({})).resolves.toBe(true);
+      });
+    });
+  });
+
+  describe('Train Custom Model:', () => {
+    describe('Error Handling:', () => {
+      it('will correctly handle an invalid API Key Error', async () => {
+        mock.onPost('/v0/train').reply(200, {error: 'invalid api key'});
+        const carter = new Carter('someKey');
+
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterInvalidApiKeyError);
+      });
+
+      it('will correctly handle a Forbidden Error', async () => {
+        mock.onPost('/v0/train').reply(403);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterForbiddenError);
+      });
+  
+      it('will correctly handle a Not Found Error', async () => {
+        mock.onPost('/v0/train').reply(404);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterNotFoundError);
+      });
+  
+      it('will correctly handle an Unprocessable Entity Error', async () => {
+        mock.onPost('/v0/train').reply(422);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterUnprocessableEntityError);
+      });
+  
+      it('will correctly handle an Internal Server Error', async () => {
+        mock.onPost('/v0/train').reply(500);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterInternalServerError);
+      });
+  
+      it('will correctly handle another odd error', async () => {
+        mock.onPost('/v0/train').reply(543);
+        const carter = new Carter('someKey');
+  
+        await expect(carter.trainModel(20)).rejects.toThrow(CarterResponseError);
+      });
+    });
+
+    describe('Successful Response:', () => {
+      it('will return a valid response', async () => {
+        mock.onPost('/v0/train').reply(200, null);
+        const carter = new Carter('someKey');
+
+        await expect(carter.trainModel(20)).resolves.toBe(true);
+      });
+    });
+  });
+
   describe('Downvote:', () => {
     describe('Error Handling:', () => {
       it('will correctly handle an invalid API Key Error', async () => {

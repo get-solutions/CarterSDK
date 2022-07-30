@@ -57,6 +57,47 @@ class Carter {
     }
   }
 
+  async addIntent(intent) {
+    let data = {...intent, api_key: this.#apiKey};
+    return await axios.post('v0/add-intent', data)
+      .then(response => {
+        if (response?.data?.error) {
+          if(response?.data?.error === 'invalid api key') {
+            throw new CarterInvalidApiKeyError();
+          }
+        }
+
+        return true;
+      })
+      .catch((e) => {
+        if (e instanceof CarterInvalidApiKeyError) {
+          throw e;
+        }
+
+        throw this.#handleError(e);
+      });
+  }
+
+  async trainModel(epochs) {
+    return await axios.post(`/v0/train`, {api_key: this.#apiKey, epochs: epochs})
+      .then(response => {
+        if (response?.data?.error) {
+          if (response?.data?.error === 'invalid api key') {
+            throw new CarterInvalidApiKeyError();
+          }
+        }
+        
+        return true;
+      })
+      .catch((e) => {
+        if (e instanceof CarterInvalidApiKeyError) {
+          throw e;
+        }
+
+        throw this.#handleError(e);
+      });
+  }
+
   async downvote(tid) {
     return await axios.post(`/v0/downvote`, {api_key: this.#apiKey, tid: tid})
       .then(response => {
