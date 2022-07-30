@@ -156,11 +156,57 @@ describe('Carter:', () => {
   });
 
   describe('Status:', () => {
-    it('will return a valid response', async () => {
-      mock.onGet(`/status`).reply(200, {data: '0.0.4'});
-      const carter = new Carter('someKey');
+    describe('Error Handling:', () => {
+        it('will correctly handle an invalid API Key Error', async () => {
+          mock.onGet('/status').reply(200, {error: 'invalid api key'});
+          const carter = new Carter('someKey');
+  
+          await expect(carter.status()).rejects.toThrow(CarterInvalidApiKeyError);
+        });
+  
+        it('will correctly handle a Forbidden Error', async () => {
+          mock.onGet('/status').reply(403);
+          const carter = new Carter('someKey');
+    
+          await expect(carter.status()).rejects.toThrow(CarterForbiddenError);
+        });
+    
+        it('will correctly handle a Not Found Error', async () => {
+          mock.onGet('/status').reply(404);
+          const carter = new Carter('someKey');
+    
+          await expect(carter.status()).rejects.toThrow(CarterNotFoundError);
+        });
+    
+        it('will correctly handle an Unprocessable Entity Error', async () => {
+          mock.onGet('/status').reply(422);
+          const carter = new Carter('someKey');
+    
+          await expect(carter.status()).rejects.toThrow(CarterUnprocessableEntityError);
+        });
+    
+        it('will correctly handle an Internal Server Error', async () => {
+          mock.onGet('/status').reply(500);
+          const carter = new Carter('someKey');
+    
+          await expect(carter.status()).rejects.toThrow(CarterInternalServerError);
+        });
+    
+        it('will correctly handle another odd error', async () => {
+          mock.onGet('/status').reply(543);
+          const carter = new Carter('someKey');
+    
+          await expect(carter.status()).rejects.toThrow(CarterResponseError);
+        });
+    });
 
-      await expect(carter.status()).resolves.toBeTruthy();
+    describe('Successful Response:', () => {
+      it('will return a valid response', async () => {
+        mock.onGet(`/status`).reply(200, {data: '0.0.4'});
+        const carter = new Carter('someKey');
+  
+        await expect(carter.status()).resolves.toBeTruthy();
+      });
     });
   });
 

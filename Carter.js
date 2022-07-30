@@ -79,7 +79,15 @@ class Carter {
 
   async status() {
     return await axios.get(`/status`)
-      .then(data => data)
+      .then(response => {
+        if (response?.data?.error) {
+          if (response?.data?.error === 'invalid api key') {
+            throw new CarterInvalidApiKeyError();
+          }
+        }
+        
+        return response;
+      })
       .catch((e) => {
         if (e instanceof CarterInvalidApiKeyError) {
           throw e;
