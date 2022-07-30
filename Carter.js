@@ -25,10 +25,10 @@ class Carter {
     throw new CarterError('Request Exception not understood');
   }
 
-  async chat(message) {
+  async chat(message, uuid=null) {
     const data = {
       query: message,
-      uuid: randomUUID(),
+      uuid: uuid !== null ? uuid : randomUUID(),
       api_key: this.#apiKey,
     };
 
