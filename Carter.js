@@ -79,7 +79,14 @@ class Carter {
 
   async status() {
     return await axios.get(`/status`)
-      .then(data => data);
+      .then(data => data)
+      .catch((e) => {
+        if (e instanceof CarterInvalidApiKeyError) {
+          throw e;
+        }
+
+        throw this.#handleError(e);
+      });
   }
 
   async speak(value) {
