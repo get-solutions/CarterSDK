@@ -1,6 +1,6 @@
 {
   "name": "cartersdk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "The Javascript Carter SDK",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/get-solutions/CarterSDK#readme",
   "devDependencies": {
+    "axios-mock-adapter": "^1.21.1",
     "jest": "^28.1.3"
+  },
+  "dependencies": {
+    "axios": "^0.27.2"
   }
 }
